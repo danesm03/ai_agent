@@ -1,4 +1,6 @@
 import os
+from google import genai
+from google.genai import types
 
 def write_file(working_directory, file_path, content):
         full_path  = os.path.abspath(os.path.join(working_directory, file_path))
@@ -22,3 +24,20 @@ def write_file(working_directory, file_path, content):
             return f'Successfully wrote to "{file_path}" ({len(content)} characters written)'
         except Exception as e:
              return f"Error:{e}"
+        
+
+schema_write_file = types.FunctionDeclaration(
+    name="write_file",
+    description="write code to a specified file in order to revise it and help with issues.",
+    parameters=types.Schema(
+        type=types.Type.OBJECT,
+        required=["directory"], 
+        properties={
+            "directory": types.Schema(
+                type=types.Type.STRING,
+                description="The directory to the file you are writing to, relative to the working directory.",
+        
+            ),
+        },
+    ),
+)
